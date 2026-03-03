@@ -21,7 +21,7 @@ warnings.filterwarnings('ignore')
 # PAGE CONFIGURATION
 # ============================================
 st.set_page_config(
-    page_title="🚀 E-commerce Intelligence ULTRA",
+    page_title="🚀 E-commerce Intelligence PRO",
     page_icon="✨",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -631,7 +631,7 @@ def main():
     # ============================================
     # HEADER
     # ============================================
-    st.markdown('<h1 class="main-title">🚀 E-commerce Intelligence ULTRA</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">🚀 E-commerce Intelligence PRO</h1>', unsafe_allow_html=True)
     
     # ============================================
     # SIDEBAR CONTROLS - DYNAMIC FILTERS
@@ -1553,7 +1553,7 @@ def main():
     
     st.markdown(f"""
     <div style="text-align: center; color: rgba(255,255,255,0.8); margin-top: 20px;">
-        <p>🚀 E-commerce Intelligence ULTRA v7.0 | Fully Functional Dashboard</p>
+        <p>🚀 E-commerce Intelligence PRO v7.0 | Fully Functional Dashboard</p>
         <small>Last refreshed: {last_refresh_str} | 
         Data: {trans_count:,} transactions | {cust_count:,} customers</small>
     </div>
