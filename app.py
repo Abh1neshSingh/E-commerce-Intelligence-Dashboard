@@ -33,53 +33,383 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ============================================
-   RESPONSIVE DESIGN - Mobile First Approach
+   ULTRA RESPONSIVE DESIGN SYSTEM v3.0
+   Mobile First + Progressive Enhancement
    ============================================ */
 
-/* Main Background */
+/* CSS Custom Properties for Dynamic Theming */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --touch-target: 44px;
+    --safe-area-top: env(safe-area-inset-top);
+    --safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+/* Base Styles - Extra Small Devices (320px+) */
 .stApp {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
+    background: var(--primary-gradient) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
 }
 
-/* Glass Cards */
-.glass-card {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 15px !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    padding: 20px !important;
-    margin: 10px 0 !important;
-}
-
-/* Title Styling - Responsive */
+/* Ultra Responsive Typography System */
 .main-title {
-    font-size: clamp(1.5rem, 5vw, 3rem) !important;
+    font-size: clamp(1.25rem, 6vw, 3rem) !important;
     font-weight: 800 !important;
     color: white !important;
     text-align: center !important;
-    margin-bottom: clamp(15px, 3vw, 30px) !important;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
-    line-height: 1.2 !important;
+    margin-bottom: clamp(12px, 4vw, 30px) !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.02em !important;
 }
 
-/* KPI Cards - Responsive */
+/* Glass Cards - Enhanced */
+.glass-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-radius: clamp(10px, 3vw, 20px) !important;
+    border: 1px solid var(--glass-border) !important;
+    padding: clamp(10px, 4vw, 24px) !important;
+    margin: clamp(6px, 2vw, 16px) 0 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    will-change: transform !important;
+}
+
+.glass-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2) !important;
+}
+
+/* KPI Cards - Ultra Responsive */
 .kpi-card {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 12px !important;
-    padding: clamp(12px, 3vw, 20px) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(16px) !important;
+    border-radius: clamp(8px, 2.5vw, 16px) !important;
+    padding: clamp(10px, 3vw, 20px) !important;
     text-align: center !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    transition: all 0.3s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-height: auto !important;
 }
 
-.kpi-card:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+.kpi-card:active {
+    transform: scale(0.98) !important;
 }
 
 .metric-value {
-    font-size: clamp(1.2rem, 4vw, 2rem) !important;
+    font-size: clamp(1.1rem, 5vw, 2.2rem) !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: clamp(5px, 2vw, 12px) 0 !important;
+    line-height: 1.2 !important;
+}
+
+.metric-label {
+    font-size: clamp(0.65rem, 2vw, 0.85rem) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+}
+
+.metric-change {
+    font-size: clamp(0.75rem, 2.2vw, 0.95rem) !important;
+    font-weight: 600 !important;
+    margin-top: clamp(3px, 1.5vw, 8px) !important;
+}
+
+.metric-change.positive { color: #4ade80 !important; }
+.metric-change.negative { color: #f87171 !important; }
+
+/* Touch Optimized Buttons */
+.stButton > button {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    border-radius: clamp(6px, 2vw, 12px) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    padding: clamp(10px, 3vw, 16px) clamp(16px, 4vw, 28px) !important;
+    min-height: var(--touch-target) !important;
+    min-width: var(--touch-target) !important;
+    font-size: clamp(0.85rem, 2.5vw, 1rem) !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+}
+
+.stButton > button:active {
+    transform: scale(0.96) !important;
+}
+
+/* Chart Containers - Device Optimized */
+.chart-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: clamp(8px, 2.5vw, 16px) !important;
+    padding: clamp(8px, 2vw, 16px) !important;
+    margin: clamp(6px, 1.5vw, 12px) 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 3px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-radius: 3px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ============================================
+   BREAKPOINT SYSTEM - Ultra Responsive
+   ============================================ */
+
+/* Small Phones (320px - 480px) */
+@media screen and (max-width: 480px) {
+    [data-testid="stHorizontalBlock"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+        padding: 0 4px !important;
+    }
+    
+    /* Mobile Sidebar */
+    .css-1d391kg {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 12px !important;
+    }
+    
+    /* Touch inputs */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > div,
+    .stDateInput > div > div > input {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+    }
+    
+    /* Hide complex elements */
+    .mobile-hide { display: none !important; }
+    .mobile-show { display: block !important; }
+    
+    /* Stack metrics vertically */
+    .metric-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+}
+
+/* Medium Phones / Large Phones (481px - 767px) */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    [data-testid="column"] {
+        flex: 1 1 50% !important;
+        max-width: 50% !important;
+        padding: 0 6px !important;
+    }
+    
+    .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+}
+
+/* Tablets (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    [data-testid="column"] {
+        flex: 1 1 50% !important;
+        max-width: 50% !important;
+        padding: 0 8px !important;
+    }
+    
+    .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+}
+
+/* Small Laptops / Large Tablets (1025px - 1366px) */
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+    [data-testid="column"] {
+        flex: 1 1 33.333% !important;
+        max-width: 33.333% !important;
+        padding: 0 10px !important;
+    }
+    
+    .metric-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 14px !important;
+    }
+}
+
+/* Desktop (1367px - 1920px) */
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+    [data-testid="column"] {
+        flex: 1 1 25% !important;
+        max-width: 25% !important;
+        padding: 0 12px !important;
+    }
+    
+    .metric-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 16px !important;
+    }
+}
+
+/* Large Desktop / 4K (1921px+) */
+@media screen and (min-width: 1921px) {
+    [data-testid="column"] {
+        flex: 1 1 20% !important;
+        max-width: 20% !important;
+        padding: 0 16px !important;
+    }
+    
+    .main-title {
+        font-size: 3.5rem !important;
+    }
+    
+    .metric-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 20px !important;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY & PERFORMANCE
+   ============================================ */
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark Mode Support (if system prefers) */
+@media (prefers-color-scheme: dark) {
+    .stApp {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .glass-card {
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .metric-value {
+        text-shadow: 0 0 10px rgba(255,255,255,0.5) !important;
+    }
+}
+
+/* Focus Indicators for Accessibility */
+.stButton > button:focus-visible,
+.stTextInput input:focus-visible,
+.stSelectbox > div:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.8) !important;
+    outline-offset: 2px !important;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Prevent Text Selection on UI Elements */
+.stButton > button,
+.glass-card,
+.kpi-card {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Loading Spinner */
+.stSpinner > div {
+    border-color: #667eea transparent transparent transparent !important;
+    border-width: 4px !important;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.mobile-only { display: none !important; }
+.desktop-only { display: block !important; }
+
+@media screen and (max-width: 768px) {
+    .mobile-only { display: block !important; }
+    .desktop-only { display: none !important; }
+}
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%) !important;
+    background-size: 200% 100% !important;
+    animation: skeleton-pulse 1.5s ease-in-out infinite !important;
+}
+
+/* Touch Feedback */
+.touch-feedback {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.touch-feedback::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 100px !important;
+    height: 100px !important;
+    background: rgba(255,255,255,0.3) !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) scale(0) !important;
+    transition: transform 0.3s ease-out !important;
+}
+
+.touch-feedback:active::after {
+    transform: translate(-50%, -50%) scale(2) !important;
+}
+</style>
+""", unsafe_allow_html=True)
     font-weight: 700 !important;
     color: #ffffff !important;
     margin: 10px 0 !important;
