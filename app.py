@@ -412,16 +412,110 @@ def generate_comprehensive_data():
     start_date = datetime(2023, 1, 1)
     end_date = datetime(2023, 12, 31)
     
-    # Customers
+    # Generate customer data
+    n_customers = 5000
+    customer_ids = [f'CUST_{i:05d}' for i in range(1, n_customers + 1)]
+    
+    customers = pd.DataFrame({
+        'customer_id': customer_ids,
+        'age': np.random.randint(18, 70, n_customers),
+        'gender': np.random.choice(['Male', 'Female', 'Other'], n_customers, p=[0.48, 0.48, 0.04]),
+        'segment': np.random.choice(['Premium', 'Regular', 'New', 'At Risk'], n_customers, 
+                                   p=[0.15, 0.50, 0.20, 0.15]),
+        'region': np.random.choice(['North', 'South', 'East', 'West', 'Central'], n_customers,
+                                 p=[0.25, 0.20, 0.25, 0.20, 0.10]),
+        'engagement_score': np.random.beta(2, 5, n_customers) * 100,
+        'lifetime_value': np.random.exponential(1500, n_customers),
+        'total_orders': np.random.poisson(8, n_customers),
+        'churned': np.random.choice([0, 1], n_customers, p=[0.85, 0.15]),
+        'registration_date': [start_date + timedelta(days=np.random.randint(0, 365)) 
+                             for _ in range(n_customers)]
+    })
+    
+    # Generate product catalog
+    n_products = 200
+    categories = ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books', 'Beauty']
+    
+    products = pd.DataFrame({
+        'product_id': [f'PROD_{i:04d}' for i in range(1, n_products + 1)],
+        'product_name': [f'Product {i}' for i in range(1, n_products + 1)],
+        'category': np.random.choice(categories, n_products),
+        'price': np.random.exponential(100, n_products) + 10,
+        'cost': np.random.exponential(60, n_products) + 5,
+        'stock_level': np.random.randint(0, 500, n_products)
+    })
+    
+    # Generate transaction data
+    n_transactions = 25000
+    
+    # Generate transaction dates
+    transaction_dates = [start_date + timedelta(days=np.random.randint(0, 365)) 
+                        for _ in range(n_transactions)]
+    
+    # Select random customers and products
+    transaction_customers = np.random.choice(customer_ids, n_transactions)
+    transaction_products = np.random.choice(products['product_id'].tolist(), n_transactions)
+    
+    transactions = pd.DataFrame({
+        'transaction_id': [f'TXN_{i:06d}' for i in range(1, n_transactions + 1)],
+        'customer_id': transaction_customers,
+        'product_id': transaction_products,
+        'quantity': np.random.randint(1, 5, n_transactions),
+        'order_date': transaction_dates,
+        'payment_method': np.random.choice(['Credit Card', 'PayPal', 'Bank Transfer', 'Cash'],
+                                         n_transactions, p=[0.50, 0.30, 0.15, 0.05]),
+        'marketing_channel': np.random.choice(['Organic', 'Paid Ads', 'Social Media', 'Email', 'Referral'],
+                                           n_transactions, p=[0.35, 0.25, 0.20, 0.15, 0.05])
+    })
+    
+    # Merge with product prices to calculate totals
+    transactions = transactions.merge(
+        products[['product_id', 'price', 'category']], 
+        on='product_id'
+    )
+    transactions['total_amount'] = transactions['quantity'] * transactions['price']
+    transactions['profit'] = transactions['total_amount'] * 0.3  # 30% margin
+    
+    # Add customer region info
+    transactions = transactions.merge(
+        customers[['customer_id', 'region', 'segment']], 
+        on='customer_id'
+    )
+    
+    # Calculate comprehensive metrics
+    total_revenue = transactions['total_amount'].sum()
+    total_orders = len(transactions)
+    total_customers = customers['customer_id'].nunique()
+    avg_order_value = total_revenue / total_orders if total_orders > 0 else 0
+    
+    churn_rate = customers['churned'].mean() * 100
+    avg_lifetime_value = customers['lifetime_value'].mean()
+    
+    # Calculate repeat purchase rate
+    customer_orders = transactions.groupby('customer_id').size()
+    repeat_customers = (customer_orders > 1).sum()
+    repeat_purchase_rate = (repeat_customers / total_customers * 100) if total_customers > 0 else 0
+    
+    # Calculate revenue growth (month-over-month)
+    monthly_revenue = transactions.groupby(transactions['order_date'].dt.to_period('M'))['total_amount'].sum()
+    if len(monthly_revenue) > 1:
+        revenue_growth = ((monthly_revenue.iloc[-1] - monthly_revenue.iloc[-2]) / monthly_revenue.iloc[-2] * 100)
+    else:
+        revenue_growth = 0
+    
+    # Category performance
+    category_performance = transactions.groupby('category')['total_amount'].sum().sort_values(ascending=False)
+    
+    # Regional performance
     regional_performance = transactions.groupby('region')['total_amount'].sum().sort_values(ascending=False)
     
-    # Payment Method Analysis
+    # Payment method analysis
     payment_analysis = transactions.groupby('payment_method')['total_amount'].sum()
     
-    # Marketing Channel Performance
+    # Marketing channel performance
     marketing_performance = transactions.groupby('marketing_channel')['total_amount'].sum()
     
-    # Product Performance
+    # Product performance
     product_performance = transactions.merge(
         products[['product_id', 'category', 'price']], 
         on='product_id'
@@ -430,7 +524,7 @@ def generate_comprehensive_data():
         'quantity': 'sum'
     }).reset_index()
     
-    # Customer Segments Analysis
+    # Customer segments analysis
     segment_analysis = customers.groupby('segment').agg({
         'customer_id': 'count',
         'lifetime_value': 'mean',
@@ -439,7 +533,13 @@ def generate_comprehensive_data():
         'total_orders': 'mean'
     }).round(2)
     
+    # Daily revenue for time series
+    daily_revenue = transactions.groupby(transactions['order_date'].dt.date)['total_amount'].sum()
+    
     return {
+        'transactions': transactions,
+        'customers': customers,
+        'products': products,
         'total_revenue': total_revenue,
         'total_orders': total_orders,
         'total_customers': total_customers,
