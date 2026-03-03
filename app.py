@@ -515,11 +515,8 @@ def generate_comprehensive_data():
     # Marketing channel performance
     marketing_performance = transactions.groupby('marketing_channel')['total_amount'].sum()
     
-    # Product performance
-    product_performance = transactions.merge(
-        products[['product_id', 'category', 'price']], 
-        on='product_id'
-    ).groupby(['category', 'product_id']).agg({
+    # Product performance (using existing merged data)
+    product_performance = transactions.groupby(['category', 'product_id']).agg({
         'total_amount': 'sum',
         'quantity': 'sum'
     }).reset_index()
