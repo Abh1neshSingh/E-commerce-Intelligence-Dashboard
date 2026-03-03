@@ -556,6 +556,13 @@ def generate_comprehensive_data():
     }
 
 # ============================================
+# DATA PROCESSING
+# ============================================
+def calculate_comprehensive_metrics(data):
+    """Calculate and return display metrics from data dictionary."""
+    return data
+
+# ============================================
 # DATA FILTERING
 # ============================================
 def apply_data_filters(data, segment='All', category='All', date_range=None, search_query=''):
