@@ -244,6 +244,220 @@ html {
     padding: 15px !important;
     color: white !important;
 }
+
+/* ============================================
+   ULTRA RESPONSIVE DESIGN SYSTEM v2.0
+   ============================================ */
+
+/* CSS Custom Properties */
+:root {
+    --touch-target: 44px;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Ultra Responsive Typography */
+.main-title {
+    font-size: clamp(1.25rem, 6vw, 3rem) !important;
+    margin-bottom: clamp(12px, 4vw, 30px) !important;
+    line-height: 1.3 !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+}
+
+/* Enhanced Glass Cards */
+.glass-card {
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border-radius: clamp(10px, 3vw, 20px) !important;
+    padding: clamp(10px, 4vw, 24px) !important;
+    margin: clamp(6px, 2vw, 16px) 0 !important;
+}
+
+/* Ultra Responsive KPI Cards */
+.kpi-card {
+    border-radius: clamp(8px, 2.5vw, 16px) !important;
+    padding: clamp(10px, 3vw, 20px) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.kpi-card:active {
+    transform: scale(0.98) !important;
+}
+
+.metric-value {
+    font-size: clamp(1.1rem, 5vw, 2.2rem) !important;
+    margin: clamp(5px, 2vw, 12px) 0 !important;
+}
+
+.metric-label {
+    font-size: clamp(0.65rem, 2vw, 0.85rem) !important;
+}
+
+.metric-change {
+    font-size: clamp(0.75rem, 2.2vw, 0.95rem) !important;
+    margin-top: clamp(3px, 1.5vw, 8px) !important;
+}
+
+/* Touch Optimized Buttons */
+.stButton > button {
+    border-radius: clamp(6px, 2vw, 12px) !important;
+    padding: clamp(10px, 3vw, 16px) clamp(16px, 4vw, 28px) !important;
+    min-height: var(--touch-target) !important;
+    min-width: var(--touch-target) !important;
+    font-size: clamp(0.85rem, 2.5vw, 1rem) !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.stButton > button:active {
+    transform: scale(0.96) !important;
+}
+
+/* Responsive Chart Containers */
+.chart-container {
+    border-radius: clamp(8px, 2.5vw, 16px) !important;
+    padding: clamp(8px, 2vw, 16px) !important;
+    margin: clamp(6px, 1.5vw, 12px) 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* ============================================
+   BREAKPOINT SYSTEM - 6 Breakpoints
+   ============================================ */
+
+/* Extra Small (320px - 480px) */
+@media screen and (max-width: 480px) {
+    [data-testid="stHorizontalBlock"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+        padding: 0 4px !important;
+    }
+    
+    .css-1d391kg {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > div,
+    .stDateInput > div > div > input {
+        min-height: 48px !important;
+        font-size: 16px !important;
+        padding: 12px 16px !important;
+    }
+    
+    .mobile-hide { display: none !important; }
+}
+
+/* Small (481px - 767px) */
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    [data-testid="column"] {
+        flex: 1 1 50% !important;
+        max-width: 50% !important;
+        padding: 0 6px !important;
+    }
+}
+
+/* Tablet (768px - 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    [data-testid="column"] {
+        flex: 1 1 50% !important;
+        max-width: 50% !important;
+        padding: 0 8px !important;
+    }
+}
+
+/* Laptop (1025px - 1366px) */
+@media screen and (min-width: 1025px) and (max-width: 1366px) {
+    [data-testid="column"] {
+        flex: 1 1 33.333% !important;
+        max-width: 33.333% !important;
+    }
+}
+
+/* Desktop (1367px - 1920px) */
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+    [data-testid="column"] {
+        flex: 1 1 25% !important;
+        max-width: 25% !important;
+    }
+}
+
+/* 4K+ (1921px+) */
+@media screen and (min-width: 1921px) {
+    [data-testid="column"] {
+        flex: 1 1 20% !important;
+        max-width: 20% !important;
+    }
+    
+    .main-title {
+        font-size: 3.5rem !important;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY & PERFORMANCE
+   ============================================ */
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus Indicators */
+.stButton > button:focus-visible,
+.stTextInput input:focus-visible,
+.stSelectbox > div:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.8) !important;
+    outline-offset: 2px !important;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+/* Better Scrollbar */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 3px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-radius: 3px !important;
+}
+
+/* Prevent Text Selection */
+.stButton > button,
+.glass-card,
+.kpi-card {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Utility Classes */
+.mobile-only { display: none !important; }
+.desktop-only { display: block !important; }
+
+@media screen and (max-width: 768px) {
+    .mobile-only { display: block !important; }
+    .desktop-only { display: none !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 
