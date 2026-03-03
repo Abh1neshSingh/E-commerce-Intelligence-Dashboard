@@ -560,7 +560,82 @@ def generate_comprehensive_data():
 # ============================================
 def calculate_comprehensive_metrics(data):
     """Calculate and return display metrics from data dictionary."""
-    return data
+    transactions = data['transactions']
+    customers = data['customers']
+    products = data['products']
+    
+    # Calculate comprehensive metrics from filtered data
+    total_revenue = transactions['total_amount'].sum()
+    total_orders = len(transactions)
+    total_customers = customers['customer_id'].nunique()
+    avg_order_value = total_revenue / total_orders if total_orders > 0 else 0
+    
+    churn_rate = customers['churned'].mean() * 100
+    avg_lifetime_value = customers['lifetime_value'].mean()
+    
+    # Calculate repeat purchase rate
+    customer_orders = transactions.groupby('customer_id').size()
+    repeat_customers = (customer_orders > 1).sum()
+    repeat_purchase_rate = (repeat_customers / total_customers * 100) if total_customers > 0 else 0
+    
+    # Calculate revenue growth (month-over-month)
+    monthly_revenue = transactions.groupby(transactions['order_date'].dt.to_period('M'))['total_amount'].sum()
+    if len(monthly_revenue) > 1:
+        revenue_growth = ((monthly_revenue.iloc[-1] - monthly_revenue.iloc[-2]) / monthly_revenue.iloc[-2] * 100)
+    else:
+        revenue_growth = 0
+    
+    # Category performance
+    category_performance = transactions.groupby('category')['total_amount'].sum().sort_values(ascending=False)
+    
+    # Regional performance
+    regional_performance = transactions.groupby('region')['total_amount'].sum().sort_values(ascending=False)
+    
+    # Payment method analysis
+    payment_analysis = transactions.groupby('payment_method')['total_amount'].sum()
+    
+    # Marketing channel performance
+    marketing_performance = transactions.groupby('marketing_channel')['total_amount'].sum()
+    
+    # Product performance
+    product_performance = transactions.groupby(['category', 'product_id']).agg({
+        'total_amount': 'sum',
+        'quantity': 'sum'
+    }).reset_index()
+    
+    # Customer segments analysis
+    segment_analysis = customers.groupby('segment').agg({
+        'customer_id': 'count',
+        'lifetime_value': 'mean',
+        'engagement_score': 'mean',
+        'churned': 'mean',
+        'total_orders': 'mean'
+    }).round(2)
+    
+    # Daily revenue for time series
+    daily_revenue = transactions.groupby(transactions['order_date'].dt.date)['total_amount'].sum()
+    
+    return {
+        'transactions': transactions,
+        'customers': customers,
+        'products': products,
+        'total_revenue': total_revenue,
+        'total_orders': total_orders,
+        'total_customers': total_customers,
+        'avg_order_value': avg_order_value,
+        'churn_rate': churn_rate,
+        'avg_lifetime_value': avg_lifetime_value,
+        'repeat_purchase_rate': repeat_purchase_rate,
+        'revenue_growth': revenue_growth,
+        'category_performance': category_performance,
+        'regional_performance': regional_performance,
+        'payment_analysis': payment_analysis,
+        'marketing_performance': marketing_performance,
+        'product_performance': product_performance,
+        'segment_analysis': segment_analysis,
+        'daily_revenue': daily_revenue,
+        'monthly_revenue': monthly_revenue
+    }
 
 # ============================================
 # DATA FILTERING
