@@ -865,7 +865,12 @@ def create_marketing_channel_chart(marketing_performance):
 
 def create_heatmap_data(transactions):
     """Create heatmap data for revenue patterns."""
-    heatmap_data = transactions.groupby(['day_of_week', 'hour'])['total_amount'].sum().unstack(fill_value=0)
+    # Create day_of_week and hour columns from order_date
+    transactions_copy = transactions.copy()
+    transactions_copy['day_of_week'] = transactions_copy['order_date'].dt.day_name()
+    transactions_copy['hour'] = transactions_copy['order_date'].dt.hour
+    
+    heatmap_data = transactions_copy.groupby(['day_of_week', 'hour'])['total_amount'].sum().unstack(fill_value=0)
     
     # Reorder days
     day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
