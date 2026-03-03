@@ -697,9 +697,6 @@ def main():
                 st.session_state.selected_segment = 'All'
                 st.session_state.selected_category = 'All'
                 st.session_state.search_query = ''
-                st.session_state.segment_select = 'All'
-                st.session_state.category_select = 'All'
-                st.session_state.search_input = ''
                 st.rerun()
         
         # Export Button
