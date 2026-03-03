@@ -32,6 +32,10 @@ st.set_page_config(
 # ============================================
 st.markdown("""
 <style>
+/* ============================================
+   RESPONSIVE DESIGN - Mobile First Approach
+   ============================================ */
+
 /* Main Background */
 .stApp {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
@@ -47,22 +51,23 @@ st.markdown("""
     margin: 10px 0 !important;
 }
 
-/* Title Styling */
+/* Title Styling - Responsive */
 .main-title {
-    font-size: 3rem !important;
+    font-size: clamp(1.5rem, 5vw, 3rem) !important;
     font-weight: 800 !important;
     color: white !important;
     text-align: center !important;
-    margin-bottom: 30px !important;
+    margin-bottom: clamp(15px, 3vw, 30px) !important;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
+    line-height: 1.2 !important;
 }
 
-/* KPI Cards */
+/* KPI Cards - Responsive */
 .kpi-card {
     background: rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(10px) !important;
     border-radius: 12px !important;
-    padding: 20px !important;
+    padding: clamp(12px, 3vw, 20px) !important;
     text-align: center !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
     transition: all 0.3s ease !important;
@@ -74,20 +79,20 @@ st.markdown("""
 }
 
 .metric-value {
-    font-size: 2rem !important;
+    font-size: clamp(1.2rem, 4vw, 2rem) !important;
     font-weight: 700 !important;
     color: #ffffff !important;
     margin: 10px 0 !important;
 }
 
 .metric-label {
-    font-size: 0.9rem !important;
+    font-size: clamp(0.7rem, 2vw, 0.9rem) !important;
     color: rgba(255, 255, 255, 0.8) !important;
     font-weight: 500 !important;
 }
 
 .metric-change {
-    font-size: 1rem !important;
+    font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
     font-weight: 600 !important;
     margin-top: 5px !important;
 }
@@ -100,13 +105,13 @@ st.markdown("""
     color: #f87171 !important;
 }
 
-/* Sidebar */
+/* Sidebar - Mobile Responsive */
 .css-1d391kg {
     background: rgba(0, 0, 0, 0.2) !important;
     backdrop-filter: blur(10px) !important;
 }
 
-/* Buttons */
+/* Buttons - Touch Friendly */
 .stButton > button {
     background: linear-gradient(45deg, #667eea, #764ba2) !important;
     border: none !important;
@@ -114,6 +119,9 @@ st.markdown("""
     color: white !important;
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
+    padding: 12px 24px !important;
+    min-height: 44px !important; /* Touch target size */
+    font-size: clamp(0.9rem, 2.5vw, 1rem) !important;
 }
 
 .stButton > button:hover {
@@ -121,15 +129,106 @@ st.markdown("""
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4) !important;
 }
 
-/* Chart Containers */
+.stButton > button:active {
+    transform: scale(0.98) !important;
+}
+
+/* Chart Containers - Responsive */
 .chart-container {
     background: rgba(255, 255, 255, 0.05) !important;
     border-radius: 12px !important;
-    padding: 15px !important;
+    padding: clamp(10px, 2vw, 15px) !important;
     margin: 10px 0 !important;
+    overflow-x: auto !important;
 }
 
-/* Success/Error Messages */
+/* Streamlit Column Layout - Responsive */
+[data-testid="column"] {
+    padding: 0 clamp(5px, 2vw, 15px) !important;
+}
+
+/* Mobile Optimizations */
+@media screen and (max-width: 768px) {
+    /* Stack columns on mobile */
+    [data-testid="stHorizontalBlock"] {
+        flex-direction: column !important;
+    }
+    
+    /* Full width on mobile */
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Sidebar full width on mobile when open */
+    .css-1d391kg {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Hide complex charts on mobile, show simplified view */
+    .mobile-hide {
+        display: none !important;
+    }
+    
+    /* Touch-friendly inputs */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > div,
+    .stDateInput > div > div > input {
+        min-height: 44px !important;
+        font-size: 16px !important; /* Prevent zoom on iOS */
+    }
+}
+
+/* Tablet Optimizations */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    [data-testid="column"] {
+        flex: 1 1 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Desktop Optimizations */
+@media screen and (min-width: 1025px) {
+    [data-testid="column"] {
+        flex: 1 1 25% !important;
+        max-width: 25% !important;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth !important;
+}
+
+/* Loading Animation */
+.stSpinner > div {
+    border-color: #667eea transparent transparent transparent !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ============================================
+   Success/Error Messages
+   ============================================ */
 .success-message {
     background: rgba(74, 222, 128, 0.2) !important;
     border: 1px solid rgba(74, 222, 128, 0.5) !important;
